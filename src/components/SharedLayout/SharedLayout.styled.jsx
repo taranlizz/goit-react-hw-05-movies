@@ -18,10 +18,8 @@ export const HeaderNav = styled.nav`
 `;
 
 export const StyledLink = styled(NavLink)`
-  color: #0a0a0a;
-
   &:hover {
-    color: #7f56d9;
+    color: #3d7bfb;
   }
 
   &:first-child {
@@ -29,6 +27,6 @@ export const StyledLink = styled(NavLink)`
   }
 
   &.active {
-    color: #7f56d9;
+    color: #3d7bfb;
   }
 `;
