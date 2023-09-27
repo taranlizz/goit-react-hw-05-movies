@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovies } from 'services/MovieApi';
+import { CastGallery } from './Cast.styled';
+import userDefault from 'images/userDefault.jpg';
+import toast from 'react-hot-toast';
 
 const Cast = () => {
   const [cast, setCast] = useState([]);
   const { movieId } = useParams();
 
   useEffect(() => {
+    if (!movieId) {
+      return;
+    }
     const controller = new AbortController();
     const getCast = async () => {
       try {
@@ -17,7 +23,7 @@ const Cast = () => {
         setCast(cast);
       } catch (error) {
         if (error.code !== 'ERR_CANCELED') {
-          console.log(error);
+          toast.error('Ooops... Something went wrong.');
         }
       }
     };
@@ -27,19 +33,23 @@ const Cast = () => {
 
   return (
     cast.length > 0 && (
-      <ul>
+      <CastGallery>
         {cast.map(({ name, id, profile_path }) => (
           <li key={id}>
             <img
               src={
-                profile_path && `https://image.tmdb.org/t/p/w200${profile_path}`
+                profile_path
+                  ? `https://image.tmdb.org/t/p/w200${profile_path}`
+                  : userDefault
               }
-              alt=""
+              alt="actor"
+              width={200}
+              height={300}
             />
             <p>{name}</p>
           </li>
         ))}
-      </ul>
+      </CastGallery>
     )
   );
 };

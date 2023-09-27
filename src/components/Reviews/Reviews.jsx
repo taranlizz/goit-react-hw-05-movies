@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovies } from 'services/MovieApi';
+import { AuthorName } from './Reviews.styled';
+import toast from 'react-hot-toast';
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   const { movieId } = useParams();
@@ -16,26 +18,25 @@ const Reviews = () => {
         setReviews(results);
       } catch (error) {
         if (error.code !== 'ERR_CANCELED') {
-          console.log(error);
+          toast.error('Ooops... Something went wrong.');
         }
       }
     };
     getReviews();
     return () => controller.abort();
   }, [movieId]);
-  console.log(reviews);
 
   return reviews.length > 0 ? (
     <ul>
       {reviews.map(({ author, content, id }) => (
         <li key={id}>
-          <p>AUTHOR: {author}</p>
+          <AuthorName>AUTHOR: {author}</AuthorName>
           <p>{content}</p>
         </li>
       ))}
     </ul>
   ) : (
-    <p>NO REVIEWS</p>
+    <p>There are no reviews for this movie yet.</p>
   );
 };
 

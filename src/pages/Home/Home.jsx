@@ -1,26 +1,22 @@
 import { useEffect, useState } from 'react';
 import { getMovies } from 'services/MovieApi';
 import MovieList from 'components/MovieList/MovieList';
-import Loader from 'components/Loader/Loader';
+import toast from 'react-hot-toast';
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
 
     const getTrendingMovies = async () => {
       try {
-        setIsLoading(true);
-        const { results } = await getMovies('/trending/all/day', controller);
+        const { results } = await getMovies('/trending/movie/day', controller);
         setMovies(results);
       } catch (error) {
         if (error.code !== 'ERR_CANCELED') {
-          console.log(error);
+          toast.error('Ooops... Something went wrong.');
         }
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -31,7 +27,6 @@ const Home = () => {
 
   return (
     <>
-      {/* {isLoading && <Loader />} */}
       <h1>Trending today</h1>
       {movies.length > 0 && <MovieList movies={movies} />}
     </>

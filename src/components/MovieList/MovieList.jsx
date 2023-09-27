@@ -1,11 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
-import { List, Item } from './MovieList.styled';
+import { List, Item, Name } from './MovieList.styled';
+import posterDefault from 'images/posterDefault.jpg';
 
 const MovieList = ({ movies }) => {
   const location = useLocation();
   return (
     <List>
-      {movies.map(({ id, title }) => (
+      {movies.map(({ id, title, poster_path }) => (
         <Item key={id}>
           <Link
             to={
@@ -13,7 +14,17 @@ const MovieList = ({ movies }) => {
             }
             state={{ from: location }}
           >
-            {title}
+            <img
+              src={
+                poster_path
+                  ? `https://image.tmdb.org/t/p/w300${poster_path}`
+                  : posterDefault
+              }
+              alt="poster"
+              width={300}
+              height={450}
+            />
+            <Name>{title}</Name>
           </Link>
         </Item>
       ))}

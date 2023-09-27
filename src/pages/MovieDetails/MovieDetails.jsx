@@ -1,15 +1,23 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { Outlet, useLocation, useParams, Link } from 'react-router-dom';
 import { getMovies } from 'services/MovieApi';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
+import { StyledLink } from './MovieDetails.styled';
 import MovieInfo from 'components/MovieInfo/MovieInfo';
+import Loader from 'components/Loader/Loader';
+import toast from 'react-hot-toast';
 
 const MovieDetails = () => {
   const [movie, setMovie] = useState(null);
   const location = useLocation();
-  const backLinkRef = useRef(location?.state?.from ?? '/movies');
+  const backLinkRef = useRef(location?.state?.from ?? '/');
   const { movieId } = useParams();
 
   useEffect(() => {
+    if (!movieId) {
+      return;
+    }
+
     const controller = new AbortController();
 
     const getMovieByID = async () => {
@@ -18,7 +26,7 @@ const MovieDetails = () => {
         setMovie(movie);
       } catch (error) {
         if (error.code !== 'ERR_CANCELED') {
-          console.log(error);
+          toast.error('Ooops... Something went wrong.');
         }
       }
     };
@@ -29,9 +37,14 @@ const MovieDetails = () => {
 
   return (
     <>
-      <Link to={backLinkRef.current}>Go back</Link>
+      <StyledLink to={backLinkRef.current}>
+        <AiOutlineArrowLeft />
+        Go back
+      </StyledLink>
       {movie && <MovieInfo movie={movie} />}
-      <Outlet />
+      <Suspense fallback={<Loader />}>
+        <Outlet />
+      </Suspense>
     </>
   );
 };
