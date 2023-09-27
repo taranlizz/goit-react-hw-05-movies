@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, Suspense } from 'react';
-import { Outlet, useLocation, useParams, Link } from 'react-router-dom';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 import { getMovies } from 'services/MovieApi';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { StyledLink } from './MovieDetails.styled';
