@@ -31,26 +31,26 @@ const Cast = () => {
     return () => controller.abort();
   }, [movieId]);
 
-  return (
-    cast.length > 0 && (
-      <CastGallery>
-        {cast.map(({ name, id, profile_path }) => (
-          <li key={id}>
-            <img
-              src={
-                profile_path
-                  ? `https://image.tmdb.org/t/p/w200${profile_path}`
-                  : userDefault
-              }
-              alt="actor"
-              width={200}
-              height={300}
-            />
-            <p>{name}</p>
-          </li>
-        ))}
-      </CastGallery>
-    )
+  return cast.length > 0 ? (
+    <CastGallery>
+      {cast.map(({ name, id, profile_path }) => (
+        <li key={id}>
+          <img
+            src={
+              profile_path
+                ? `https://image.tmdb.org/t/p/w200${profile_path}`
+                : userDefault
+            }
+            alt="actor"
+            width={200}
+            height={300}
+          />
+          <p>{name}</p>
+        </li>
+      ))}
+    </CastGallery>
+  ) : (
+    <p>There is no cast information for this movie.</p>
   );
 };
 
